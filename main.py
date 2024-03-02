@@ -42,7 +42,6 @@ if time_unit == "year":
 
 interest_rate_decimal = interest_rate_percentage / 100 # converting the interest rate % to a decimal by dividing 100
 
-
 # calculate simple interest, following formula of A = P(1 + rt)
 total_amount = round(principal*(1 + interest_rate_decimal), 2) # rounding to 2 dec places cause cents
 print(total_amount)
