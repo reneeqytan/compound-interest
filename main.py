@@ -26,3 +26,13 @@ interest_rate = None
 time = None
 total_amount = None
 
+## SIMPLE INTEREST VS COMPOUND COMPARISON
+
+print("Simple Interest Account")
+principal = (int(input("Enter the principal amount in $: ")))
+interest_rate = (int(input("Enter the interest rate without the percentage sign: ")))
+time = input("Enter the interest rate time unit (year, quarter, month, week, day): ")
+
+# calculate simple interest
+total_amount = principal*(1 + interest_rate)
+print(total_amount)
