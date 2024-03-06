@@ -13,9 +13,10 @@ time_dictionary = {
         "year": 52
     },
     "years_dict": {
-        "week": 1/52,
-        "month": 1/12,
-        "quarter": 1/4,
+        "week": 1 / 52,
+        "month": 1 / 12,
+        "quarter": 1 / 4,
+        "day": 1 / 365,
         "year": 1,
     }
 }
@@ -51,11 +52,11 @@ elif time_unit == "month":
     time_period = time_dictionary["years_dict"]["month"] * time_elapsed
 elif time_unit == "week":
     time_period = time_dictionary["years_dict"]["week"] * time_elapsed
-
-
+elif time_unit == "day":
+    time_period = time_dictionary["years_dict"]["day"] * time_elapsed
 
 interest_rate_decimal = interest_rate_percentage / 100  # converting the interest rate % to a decimal by dividing 100
 
 # calculate simple interest, following formula of A = P(1 + rt)
-total_amount = (principal * (1 + interest_rate_decimal * time_period), 2)  # rounding to 2 dec places cause cents
+total_amount = round(principal * (1 + interest_rate_decimal * time_period), 2)  # rounding to 2 dec places cause cents
 print(total_amount)
