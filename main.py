@@ -11,6 +11,12 @@ time_dictionary = {
         "month": 4,
         "quarter": 12,
         "year": 52
+    },
+    "years_dict": {
+        "week": 1/52,
+        "month": 1/12,
+        "quarter": 1/4,
+        "year": 1,
     }
 }
 
@@ -36,12 +42,20 @@ interest_rate_percentage = (int(input("Enter the interest rate without the perce
 time_unit = input("Enter the interest rate time unit (year, quarter, month, week, day): ")
 time_elapsed = int(input("Enter the number of the previous time unit the interest will be calculated for: "))
 
-
+# calling dictionary values which were preassigned. getting the years_dict cause it's annual calculation
 if time_unit == "year":
-    time_period = 1 * time_elapsed # the number of years elapsed calculation to get the final time period
+    time_period = time_dictionary["years_dict"]["year"] * time_elapsed # the number of years elapsed calculation to get the final time period
+elif time_unit == "quarter":
+    time_period = time_dictionary["years_dict"]["quarter"] * time_elapsed
+elif time_unit == "month":
+    time_period = time_dictionary["years_dict"]["month"] * time_elapsed
+elif time_unit == "week":
+    time_period = time_dictionary["years_dict"]["week"] * time_elapsed
+
+
 
 interest_rate_decimal = interest_rate_percentage / 100  # converting the interest rate % to a decimal by dividing 100
 
 # calculate simple interest, following formula of A = P(1 + rt)
-total_amount = round(principal * (1 + interest_rate_decimal * time_period), 2)  # rounding to 2 dec places cause cents
+total_amount = (principal * (1 + interest_rate_decimal * time_period), 2)  # rounding to 2 dec places cause cents
 print(total_amount)
