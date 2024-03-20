@@ -130,3 +130,16 @@ print(summary_ci)
 print("\nProjected Amounts and Interest Earned:")
 print(f"SI Account projected amount: ${projected_amount_si}, Interest earned: ${interest_earned_si}")
 print(f"CI Account projected amount: ${projected_amount_ci}, Interest earned: ${interest_earned_ci}")
+
+print("MODULE 2: TIME FOR A CI ACCOUNT TO REACH A TARGET AMOUNT")
+
+# Input parameters
+principal = int(input("Enter the principal amount in $: "))
+interest_rate_percentage = float(input("Enter the interest rate (enter 7% as 7): "))
+time_unit = input("Enter the interest rate time unit (year, quarter, month, week, day): ")
+compounding_period_unit = input("Enter the compounding period time unit (year, quarter, month, week, day, custom): ")
+target_amount = float(input("Enter the target amount: "))
+
+# Summarise input data
+summary = f"CI Account: P = {principal}, r = {interest_rate_percentage}% per {time_unit}, Compounding Frequency: {compounding_period_unit}\nTarget amount: {target_amount}"
+print(summary)
