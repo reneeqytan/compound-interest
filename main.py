@@ -182,3 +182,4 @@ elif compounding_period_unit == "week":
 elif compounding_period_unit == "day":
     time_unit_plural = "days"
 print(f"Time taken: {periods} {time_unit_plural}")
+
