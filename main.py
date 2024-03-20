@@ -143,3 +143,18 @@ target_amount = float(input("Enter the target amount: "))
 # Summarise input data
 summary = f"CI Account: P = {principal}, r = {interest_rate_percentage}% per {time_unit}, Compounding Frequency: {compounding_period_unit}\nTarget amount: {target_amount}"
 print(summary)
+
+# Calculate compound interest and projection
+interest_rate_decimal = interest_rate_percentage / 100
+
+def define_time_period(time_unit, compounding_period_unit):
+    if time_unit == "year":
+        return time_dictionary["years_dict"][compounding_period_unit]
+    elif time_unit == "quarter":
+        return time_dictionary["years_dict"][compounding_period_unit] / 4
+    elif time_unit == "month":
+        return time_dictionary["years_dict"][compounding_period_unit] / 12
+    elif time_unit == "week":
+        return time_dictionary["years_dict"][compounding_period_unit] / 52
+    elif time_unit == "day":
+        return time_dictionary["years_dict"][compounding_period_unit] / 365
