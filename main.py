@@ -158,3 +158,27 @@ def define_time_period(time_unit, compounding_period_unit):
         return time_dictionary["years_dict"][compounding_period_unit] / 52
     elif time_unit == "day":
         return time_dictionary["years_dict"][compounding_period_unit] / 365
+
+time_period = define_time_period(time_unit, compounding_period_unit)
+
+projection = []
+amount = principal
+periods = 0
+while amount < target_amount:
+    amount *= (1 + interest_rate_decimal / time_period)
+    projection.append(round(amount, 2))
+    periods += 1
+
+# Output projection and time taken
+print("Forward projection:", projection)
+if compounding_period_unit == "year":
+    time_unit_plural = "years"
+elif compounding_period_unit == "quarter":
+    time_unit_plural = "quarters"
+elif compounding_period_unit == "month":
+    time_unit_plural = "months"
+elif compounding_period_unit == "week":
+    time_unit_plural = "weeks"
+elif compounding_period_unit == "day":
+    time_unit_plural = "days"
+print(f"Time taken: {periods} {time_unit_plural}")
