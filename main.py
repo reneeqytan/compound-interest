@@ -45,7 +45,9 @@ interest_rate_decimal_si = interest_rate_percentage_si / 100  # converting the i
 
 # Calculate simple interest using the formula: A = P(1 + rt)
 total_amount_si = round(principal_si * (1 + interest_rate_decimal_si * time_period_si), 2)  # rounding to 2 decimal places
-print("Total amount after simple interest:", total_amount_si)
+
+# Summary for Simple Interest Account
+summary_si = f"SI Account: P = {principal_si}, r = {interest_rate_percentage_si}% per year"
 
 ### COMPOUND INTEREST CALCULATION
 
@@ -108,4 +110,23 @@ projection_period = define_projection_period(projection_time, projection_time_un
 
 total_amount_ci = round(principal_ci * (1 + interest_rate_decimal_ci / compounding_period) ** (compounding_period * time_period_ci), 2)
 
-print("Total amount after compound interest:", total_amount_ci)
+# Summary for Compound Interest Account
+summary_ci = f"CI Account: P = {principal_ci}, r = {interest_rate_percentage_ci}% per year, Compounding Frequency: {compounding_period}"
+
+# Calculating projected amount and interest earned for Simple Interest Account
+projected_amount_si = total_amount_si
+interest_earned_si = projected_amount_si - principal_si
+
+# Calculating projected amount and interest earned for Compound Interest Account
+projected_amount_ci = total_amount_ci
+interest_earned_ci = projected_amount_ci - principal_ci
+
+# Output the summary lines
+print("\nSummary:")
+print(summary_si)
+print(summary_ci)
+
+# Output the projected amounts and interest earned
+print("\nProjected Amounts and Interest Earned:")
+print(f"SI Account projected amount: ${projected_amount_si}, Interest earned: ${interest_earned_si}")
+print(f"CI Account projected amount: ${projected_amount_ci}, Interest earned: ${interest_earned_ci}")
