@@ -380,5 +380,17 @@ opening_amounts, interest_earneds, regular_deposits, closing_amounts = calculate
 print("Projections:")
 print("Opening Amount | Interest Earned | Regular Deposit | Closing Amount")
 for period in range(projection_time):
-    print(
-        f"{opening_amounts[period]} | {interest_earneds[period]} | {regular_deposits[period]} | {closing_amounts[period]}")
+    print(f"{opening_amounts[period]} | {interest_earneds[period]} | {regular_deposits[period]} | {closing_amounts[period]}")
+
+def is_target_amount_reached(closing_amounts, target_amount):
+    # Check if any closing amount is greater than or equal to the target amount
+    for closing_amount in closing_amounts:
+        if closing_amount >= target_amount:
+            return True
+    return False
+
+# Sample usage
+if is_target_amount_reached(closing_amounts, target_amount):
+    print("Target amount is reached!")
+else:
+    print("Target amount is not reached.")
