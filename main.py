@@ -51,7 +51,7 @@ summary_si = f"SI Account: P = {principal_si}, r = {interest_rate_percentage_si}
 
 ### COMPOUND INTEREST CALCULATION
 
-print("\nCompound Interest Account")
+print("Compound Interest Account")
 principal_ci = int(input("Enter the principal amount in $: "))
 interest_rate_percentage_ci = float(input("Enter the interest rate (enter 7% as 7): "))
 time_unit_ci = input("Enter the interest rate time unit (year, quarter, month, week, day): ")
@@ -147,6 +147,7 @@ print(summary)
 # Calculate compound interest and projection
 interest_rate_decimal = interest_rate_percentage / 100
 
+
 def define_time_period(time_unit, compounding_period_unit):
     if time_unit == "year":
         return time_dictionary["years_dict"][compounding_period_unit]
@@ -159,6 +160,7 @@ def define_time_period(time_unit, compounding_period_unit):
     elif time_unit == "day":
         return time_dictionary["years_dict"][compounding_period_unit] / 365
 
+
 time_period = define_time_period(time_unit, compounding_period_unit)
 
 projection = []
@@ -170,7 +172,7 @@ while amount < target_amount:
     periods += 1
 
 # Output projection and time taken
-print("Forward projection:", projection)
+print("\nForward projection:", projection)
 if compounding_period_unit == "year":
     time_unit_plural = "years"
 elif compounding_period_unit == "quarter":
@@ -258,3 +260,40 @@ if target_amount != 0:
             print(f"\nAccount 1 reaches the target amount of ${target_amount} at period {period+1}")
             print(f"Account 2 reaches the target amount of ${target_amount} at period {period+1}")
             break
+
+# PART 4, MODELING REGULAR DEPOSITSS
+# mr kigodi aint no way u getting a car for 20,000... not in this economy. thanks labor
+
+def input_regular_deposit_params():
+    print("MODULE 5: Compound Interest account with regular deposits")
+    principal = float(input("Enter the principal amount in $: "))
+    interest_rate_percentage = float(input("Enter the interest rate (enter 7% as 7): "))
+    time_unit = input("Enter the interest rate time unit (year, quarter, month, week, day): ")
+    compounding_period_unit = input(
+        "Enter the compounding period time unit (year, quarter, month, week, day, custom): ")
+    regular_deposit_amount = float(input("Enter the regular deposit amount per compounding period: "))
+    target_amount = float(input(
+        "Enter the dollar amount to project to (if you enter 0, you will be asked for the amount of time to project for): "))
+
+    if target_amount == 0:
+        projection_time = int(input("In that case, enter the amount of time to project for: "))
+        projection_time_unit = input("Enter the projection time unit (year, quarter, month, week, day, custom): ")
+    else:
+        projection_time = None
+        projection_time_unit = None
+
+    return {
+        "principal": principal,
+        "interest_rate_percentage": interest_rate_percentage,
+        "time_unit": time_unit,
+        "compounding_period_unit": compounding_period_unit,
+        "regular_deposit_amount": regular_deposit_amount,
+        "target_amount": target_amount,
+        "projection_time": projection_time,
+        "projection_time_unit": projection_time_unit
+    }
+
+
+# Prompt the user to input parameters for the compound interest account with regular deposits
+regular_deposit_params = input_regular_deposit_params()
+print("\nRegular Deposit Account parameters:", regular_deposit_params)
