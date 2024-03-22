@@ -1,4 +1,5 @@
 from tabulate import tabulate
+import math
 
 # defining time periods in days
 time_dictionary = {
@@ -61,10 +62,10 @@ compounding_period_unit = input("Enter the compounding period time unit (year, q
 projection_time_unit = input("Enter the projection time unit (year, quarter, month, week, day): ")
 projection_time = int(input("Future projection timeframe for both accounts. Enter the amount of time to project into the future: "))
 
-# Convert interest rate to a decimal
+# convert interest rate to a decimal for easier calculations
 interest_rate_decimal_ci = interest_rate_percentage_ci / 100
 
-# Define time period based on the selected time unit and projection time
+# Define time period based on the selected time unit and projection time, once again as derivatives of a year
 def define_time_period(time_unit, time_elapsed):
     if time_unit == "year":
         return time_elapsed
@@ -77,7 +78,7 @@ def define_time_period(time_unit, time_elapsed):
     elif time_unit == "day":
         return time_elapsed / 30
 
-# Define compounding period based on the selected compounding period unit
+# define compounding period based on the selected compounding period unit as derivatives of a year
 def define_compounding_period(compounding_period_unit):
     if compounding_period_unit == "year":
         return 1
@@ -92,7 +93,7 @@ def define_compounding_period(compounding_period_unit):
     elif compounding_period_unit == "custom":
         return int(input("Enter custom compounding periods per year: "))
 
-# Define projection period based on the selected projection time unit
+# define projection period based on the selected projection time unit, defining it in years
 def define_projection_period(projection_time, projection_time_unit):
     if projection_time_unit == "year":
         return projection_time
@@ -105,44 +106,44 @@ def define_projection_period(projection_time, projection_time_unit):
     elif projection_time_unit == "day":
         return projection_time / 30
 
-# Calculate compound interest using the formula: A = P(1 + r/n)^(nt)
+# calculate compound interest using the compound interests formula: A = P(1 + r/n)^(nt)
 time_period_ci = define_time_period(time_unit_ci, projection_time)
 compounding_period = define_compounding_period(compounding_period_unit)
 projection_period = define_projection_period(projection_time, projection_time_unit)
 
 total_amount_ci = round(principal_ci * (1 + interest_rate_decimal_ci / compounding_period) ** (compounding_period * time_period_ci), 2)
 
-# Summary for Compound Interest Account
+# summary for CI Account for ease of use
 summary_ci = f"CI Account: P = {principal_ci}, r = {interest_rate_percentage_ci}% per year, Compounding Frequency: {compounding_period}"
 
-# Calculating projected amount and interest earned for Simple Interest Account
+# calculating projected amount and interest earned for simple Interest account
 projected_amount_si = total_amount_si
 interest_earned_si = projected_amount_si - principal_si
 
-# Calculating projected amount and interest earned for Compound Interest Account
+# calculating projected amount and interest earned for CI account
 projected_amount_ci = total_amount_ci
 interest_earned_ci = projected_amount_ci - principal_ci
 
-# Output the summary lines
+# output the summary lines
 print("\nSummary:")
 print(summary_si)
 print(summary_ci)
 
-# Output the projected amounts and interest earned
+# output the projected amounts and interest earned
 print("\nProjected Amounts and Interest Earned:")
 print(f"SI Account projected amount: ${projected_amount_si}, Interest earned: ${interest_earned_si}")
 print(f"CI Account projected amount: ${projected_amount_ci}, Interest earned: ${interest_earned_ci}")
 
 print("MODULE 2: TIME FOR A CI ACCOUNT TO REACH A TARGET AMOUNT")
 
-# Input parameters
+# input parameters of the interest calculation
 principal = int(input("Enter the principal amount in $: "))
 interest_rate_percentage = float(input("Enter the interest rate (enter 7% as 7): "))
 time_unit = input("Enter the interest rate time unit (year, quarter, month, week, day): ")
 compounding_period_unit = input("Enter the compounding period time unit (year, quarter, month, week, day, custom): ")
 target_amount = float(input("Enter the target amount: "))
 
-# Summarise input data
+# summarise input data for easy comparison for user
 summary = f"CI Account: P = {principal}, r = {interest_rate_percentage}% per {time_unit}, Compounding Frequency: {compounding_period_unit}\nTarget amount: {target_amount}"
 print(summary)
 
@@ -254,7 +255,7 @@ print("\nComparison of Compound Interest Account Projections:")
 for period in range(min(len(ci_account1_projection), len(ci_account2_projection))):
     print(f"Period {period+1}: Account 1 - ${ci_account1_projection[period]}, Account 2 - ${ci_account2_projection[period]}")
 
-# Check which account reaches the target amount first, if specified
+# check which account reaches the target amount first, if specified. does this by iterating through in a loop until the target amount is reached by either one
 target_amount = float(input("Enter the target amount to compare (or enter 0 if not needed): "))
 if target_amount != 0:
     for period in range(min(len(ci_account1_projection), len(ci_account2_projection))):
@@ -266,6 +267,7 @@ if target_amount != 0:
 # PART 4, MODELING REGULAR DEPOSITSS
 # mr kigodi aint no way u getting a car for 20,000... not in this economy. thanks labor
 
+# similar process here as before, function that asks for user input to define parameters in prep for calculations
 def input_regular_deposit_params():
     print("MODULE 5: Compound Interest account with regular deposits")
     principal = float(input("Enter the principal amount in $: "))
@@ -276,14 +278,14 @@ def input_regular_deposit_params():
     regular_deposit_amount = float(input("Enter the regular deposit amount per compounding period: "))
     target_amount = float(input(
         "Enter the dollar amount to project to (if you enter 0, you will be asked for the amount of time to project for): "))
-
+    # handles the decision to either use a target amount or a projection time
     if target_amount == 0:
         projection_time = int(input("In that case, enter the amount of time to project for: "))
         projection_time_unit = input("Enter the projection time unit (year, quarter, month, week, day, custom): ")
     else:
         projection_time = None
         projection_time_unit = None
-
+    # returns the relevant parameters for the calculations
     return {
         "principal": principal,
         "interest_rate_percentage": interest_rate_percentage,
@@ -296,20 +298,20 @@ def input_regular_deposit_params():
     }
 
 
-# Prompt the user to input parameters for the compound interest account with regular deposits
+# prompts user to input parameters for the compound interest account with regular deposits
 regular_deposit_params = input_regular_deposit_params()
 print("\nRegular Deposit Account parameters:", regular_deposit_params)
 
 
 # Calculate compound interest with regular deposits
-def calculate_compound_interest_with_regular_deposits(principal, interest_rate_percentage, time_unit,
+def calculate_compound_interest_with_regular_deposits(compounding_frequency, principal, interest_rate_percentage, time_unit,
                                                       compounding_period_unit,
                                                       regular_deposit_amount, projection_time, projection_time_unit,
                                                       target_amount):
-    # Convert interest rate to a decimal
+    # converts interest rate to a decimal
     interest_rate_decimal = interest_rate_percentage / 100
 
-    # Define compounding period based on the selected compounding period unit
+    # defines compounding period based on the selected compounding period unit
     def define_compounding_period(compounding_period_unit):
         if compounding_period_unit == "year":
             return 1
@@ -325,9 +327,11 @@ def calculate_compound_interest_with_regular_deposits(principal, interest_rate_p
             return int(input("Enter custom compounding periods per year: "))
 
     compounding_period = define_compounding_period(compounding_period_unit)
+    regular_deposit_params["compounding_frequency"] = input(
+        "Enter the compounding frequency (quarterly, monthly, weekly, daily, hourly, 10-minutely): ")
 
-    # Calculate compound interest with regular deposits
-    def define_time_period(time_unit, compounding_period_unit):
+    # calculate compound interest with regular deposits
+    def define_time_period(time_unit, compounding_period_unit): # converts time periods based on the derivative of a year
         if time_unit == "year":
             return time_dictionary["years_dict"][compounding_period_unit]
         elif time_unit == "quarter":
@@ -341,13 +345,13 @@ def calculate_compound_interest_with_regular_deposits(principal, interest_rate_p
 
     time_period = define_time_period(time_unit, compounding_period_unit)
 
-    # Initialize lists to store projections
+    # initialise lists to store projections
     opening_amounts = []
     interest_earneds = []
     regular_deposits = []
     closing_amounts = []
 
-    # Initialize opening amount with principal
+    # initialises opening amount with principal
     opening_amount = principal
 
     # Calculate compound interest and projections for each compounding period
@@ -369,64 +373,63 @@ def calculate_compound_interest_with_regular_deposits(principal, interest_rate_p
     return opening_amounts, interest_earneds, regular_deposits, closing_amounts
 
 
-# Call the function to calculate compound interest with regular deposits
-try:
-    opening_amounts, interest_earneds, regular_deposits, closing_amounts = calculate_compound_interest_with_regular_deposits(
-        **regular_deposit_params)
+# calls the function to calculate compound interest with regular deposits
 
-    # Prepare data for tabulation
-    data = []
-    for period in range(len(opening_amounts)):
-        data.append(
-            [opening_amounts[period], interest_earneds[period], regular_deposits[period], closing_amounts[period]])
+opening_amounts, interest_earneds, regular_deposits, closing_amounts = calculate_compound_interest_with_regular_deposits(**regular_deposit_params, compounding_frequency=None)
+          # Add compounding_frequency here
 
-    # Display results using tabulate
-    print("Projections:")
-    print(tabulate(data, headers=["Opening Amount", "Interest Earned", "Regular Deposit", "Closing Amount"],
-                   tablefmt="fancy_grid"))
 
-except IndexError as e:
-    print("An IndexError occurred:", e)
-    print("Please check your calculations and ensure that the projection lists have the correct lengths.")
+
+data = []
+# iterates over the length of opening amounts, constructs list containing the opening amount, interest earned etc. then appends to data list above
+for period in range(len(opening_amounts)):
+    data.append(
+        [opening_amounts[period], interest_earneds[period], regular_deposits[period], closing_amounts[period]])
+
+# display results using tabulate library, doesn't it look pretty uwu
+print("Projections:")
+print(tabulate(data, headers=["Opening Amount", "Interest Earned", "Regular Deposit", "Closing Amount"], tablefmt="fancy_grid"))
+
 def is_target_amount_reached(closing_amounts, target_amount):
-    # Check if any closing amount is greater than or equal to the target amount
+    # check if any closing amount is greater than or equal to the target amount
     for closing_amount in closing_amounts:
         if closing_amount >= target_amount:
             return True
     return False
 
+# uses above logic (target amount reached function) to return result for whether the target was reached
 if is_target_amount_reached(closing_amounts, target_amount):
     print("Target amount is reached!")
 else:
     print("Target amount is not reached.")
 
-# Check if the target amount is reached
+# checks if the target amount is reached
 target_amount = regular_deposit_params["target_amount"]
 if target_amount != 0:
-    # Determine if the target amount is reached with the current regular deposit amount
+    # determines if the target amount is reached with the current regular deposit amount
     if is_target_amount_reached(closing_amounts, target_amount):
         print("Target amount reached.")
     else:
-        # Adjust the regular deposit amount iteratively until the target amount is reached
+        # adjusts the regular deposit amount iteratively until the target amount is reached
         min_regular_deposit = 0
-        max_regular_deposit = target_amount  # Maximum regular deposit cannot exceed the target amount
+        max_regular_deposit = target_amount  # sets so maximum regular deposit cannot exceed  target amount
         while True:
-            # Calculate the midpoint of the minimum and maximum regular deposit amounts
+            # calculates the midpoint of the minimum and maximum regular deposit amounts
             regular_deposit_amount = (min_regular_deposit + max_regular_deposit) / 2
-            # Calculate compound interest with the updated regular deposit amount
+            # calculates compound interest with the updated regular deposit amount
             opening_amounts, interest_earneds, regular_deposits, closing_amounts = calculate_compound_interest_with_regular_deposits(
                 **regular_deposit_params, regular_deposit_amount=regular_deposit_amount)
-            # Check if the target amount is reached with the updated regular deposit amount
+            # checks if the target amount is reached with the updated regular deposit amount
             if is_target_amount_reached(closing_amounts, target_amount):
                 print("Target amount reached with regular deposit amount:", regular_deposit_amount)
                 break
             else:
-                # Adjust the range for the regular deposit amount based on whether the closing amount is greater or less than the target amount
+                # adjusts the range for the regular deposit amount based on whether the closing amount is greater or less than the target amount
                 if closing_amounts[-1] < target_amount:
-                    # If closing amount is less than target amount, increase the minimum regular deposit amount
+                    # if closing amount is less than target amount, increase the minimum regular deposit amount
                     min_regular_deposit = regular_deposit_amount
                 else:
-                    # If closing amount is greater than target amount, decrease the maximum regular deposit amount
+                    # if closing amount is greater than target amount, decrease the maximum regular deposit amount
                     max_regular_deposit = regular_deposit_amount
 
 # Prepare data for tabulation
@@ -434,11 +437,3 @@ data = []
 for period in range(len(opening_amounts)):
     data.append([opening_amounts[period], interest_earneds[period], regular_deposits[period], closing_amounts[period]])
 
-# Prompt the user to input parameters for the compound interest account with regular deposits
-regular_deposit_params = input_regular_deposit_params()
-compounding_frequency = input("Enter the compounding frequency (quarterly, monthly, weekly, daily, hourly, 10-minutely): ")
-regular_deposit_params["compounding_frequency"] = compounding_frequency
-
-# Call the function with updated parameters
-opening_amounts, interest_earneds, regular_deposits, closing_amounts = calculate_compound_interest_with_regular_deposits(
-    **regular_deposit_params)
