@@ -297,3 +297,88 @@ def input_regular_deposit_params():
 # Prompt the user to input parameters for the compound interest account with regular deposits
 regular_deposit_params = input_regular_deposit_params()
 print("\nRegular Deposit Account parameters:", regular_deposit_params)
+
+
+def calculate_compound_interest_with_regular_deposits(principal, interest_rate_percentage, time_unit, compounding_period_unit, regular_deposit_amount, projection_time, projection_time_unit):
+    # Convert interest rate to a decimal
+    interest_rate_decimal = interest_rate_percentage / 100
+
+    # Define time period based on the selected time unit and projection time
+    def define_time_period(time_unit, projection_time):
+        if time_unit == "year":
+            return projection_time
+        elif time_unit == "quarter":
+            return projection_time * 4
+        elif time_unit == "month":
+            return projection_time
+        elif time_unit == "week":
+            return projection_time / 4
+        elif time_unit == "day":
+            return projection_time / 30
+
+    # Define compounding period based on the selected compounding period unit
+    def define_compounding_period(compounding_period_unit):
+        if compounding_period_unit == "year":
+            return 1
+        elif compounding_period_unit == "quarter":
+            return 4
+        elif compounding_period_unit == "month":
+            return 12
+        elif compounding_period_unit == "week":
+            return 52
+        elif compounding_period_unit == "day":
+            return 365
+        elif compounding_period_unit == "custom":
+            return int(input("Enter custom compounding periods per year: "))
+
+    # Calculate compound interest with regular deposits
+    time_period = define_time_period(time_unit, projection_time)
+    compounding_period = define_compounding_period(compounding_period_unit)
+
+    # Initialize lists to store projections
+    opening_amounts = []
+    interest_earneds = []
+    regular_deposits = []
+    closing_amounts = []
+
+    # Initialize opening amount with principal
+    opening_amount = principal
+
+    # Calculate compound interest and projections for each compounding period
+    for period in range(projection_time):
+        # Calculate interest earned for the current period
+        interest_earned = opening_amount * (interest_rate_decimal / compounding_period)
+        # Add regular deposit to the opening amount
+        opening_amount += regular_deposit_amount
+        # Calculate closing amount for the current period
+        closing_amount = opening_amount + interest_earned
+        # Store calculated values
+        opening_amounts.append(round(opening_amount, 2))
+        interest_earneds.append(round(interest_earned, 2))
+        regular_deposits.append(regular_deposit_amount)
+        closing_amounts.append(round(closing_amount, 2))
+        # Update opening amount for the next period
+        opening_amount = closing_amount
+
+    return opening_amounts, interest_earneds, regular_deposits, closing_amounts
+
+
+# Sample usage
+principal = 1000
+interest_rate_percentage = 5
+time_unit = "year"
+compounding_period_unit = "month"
+regular_deposit_amount = 250
+projection_time = 5
+projection_time_unit = "year"
+
+opening_amounts, interest_earneds, regular_deposits, closing_amounts = calculate_compound_interest_with_regular_deposits(
+    principal, interest_rate_percentage, time_unit, compounding_period_unit, regular_deposit_amount, projection_time,
+    projection_time_unit)
+
+# Output projections
+print("Projections:")
+print("Opening Amount | Interest Earned | Regular Deposit | Closing Amount")
+for period in range(projection_time):
+    print(
+        f"{opening_amounts[period]} | {interest_earneds[period]} | {regular_deposits[period]} | {closing_amounts[period]}")
