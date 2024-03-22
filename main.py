@@ -184,7 +184,7 @@ elif compounding_period_unit == "day":
 print(f"Time taken: {periods} {time_unit_plural}")
 
 # PART 3, comparing 2 ci accounts
-
+print("MODULE 3: COMPARING TWO CI ACCOUNTS")
 def input_ci_account_params(account_number):
     print(f"Input parameters for Compound Interest Account {account_number}:")
     principal = int(input("Enter the principal amount in $: "))
