@@ -235,3 +235,26 @@ def calculate_compound_interest(principal, interest_rate_percentage, time_unit, 
         periods += 1
 
     return projection
+
+ci_account1_projection = calculate_compound_interest(**ci_account1_params)
+ci_account2_projection = calculate_compound_interest(**ci_account2_params)
+
+# Output the projections
+print("\nProjection for Compound Interest Account 1:")
+print(ci_account1_projection)
+print("\nProjection for Compound Interest Account 2:")
+print(ci_account2_projection)
+
+# Display the comparison
+print("\nComparison of Compound Interest Account Projections:")
+for period in range(min(len(ci_account1_projection), len(ci_account2_projection))):
+    print(f"Period {period+1}: Account 1 - ${ci_account1_projection[period]}, Account 2 - ${ci_account2_projection[period]}")
+
+# Check which account reaches the target amount first, if specified
+target_amount = float(input("Enter the target amount to compare (or enter 0 if not needed): "))
+if target_amount != 0:
+    for period in range(min(len(ci_account1_projection), len(ci_account2_projection))):
+        if ci_account1_projection[period] >= target_amount or ci_account2_projection[period] >= target_amount:
+            print(f"\nAccount 1 reaches the target amount of ${target_amount} at period {period+1}")
+            print(f"Account 2 reaches the target amount of ${target_amount} at period {period+1}")
+            break
