@@ -209,3 +209,29 @@ ci_account2_params = input_ci_account_params(2)
 print("\nCompound Interest Account 1 parameters:", ci_account1_params)
 print("Compound Interest Account 2 parameters:", ci_account2_params)
 
+# function to calculate the compound interest of the second account
+def calculate_compound_interest(principal, interest_rate_percentage, time_unit, compounding_period_unit, projection_time):
+    def define_time_period(time_unit, compounding_period_unit):
+        if time_unit == "year":
+            return time_dictionary["years_dict"][compounding_period_unit]
+        elif time_unit == "quarter":
+            return time_dictionary["years_dict"][compounding_period_unit] / 4
+        elif time_unit == "month":
+            return time_dictionary["years_dict"][compounding_period_unit] / 12
+        elif time_unit == "week":
+            return time_dictionary["years_dict"][compounding_period_unit] / 52
+        elif time_unit == "day":
+            return time_dictionary["years_dict"][compounding_period_unit] / 365
+
+    interest_rate_decimal = interest_rate_percentage / 100
+    time_period = define_time_period(time_unit, compounding_period_unit)
+
+    projection = []
+    amount = principal
+    periods = 0
+    while periods < projection_time:
+        amount *= (1 + interest_rate_decimal / time_period) ** (time_period)
+        projection.append(round(amount, 2))
+        periods += 1
+
+    return projection
