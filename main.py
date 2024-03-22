@@ -394,3 +394,32 @@ if is_target_amount_reached(closing_amounts, target_amount):
     print("Target amount is reached!")
 else:
     print("Target amount is not reached.")
+
+# Check if the target amount is reached
+target_amount = regular_deposit_params["target_amount"]
+if target_amount != 0:
+    # Determine if the target amount is reached with the current regular deposit amount
+    if is_target_amount_reached(closing_amounts, target_amount):
+        print("Target amount reached.")
+    else:
+        # Adjust the regular deposit amount iteratively until the target amount is reached
+        min_regular_deposit = 0
+        max_regular_deposit = target_amount  # Maximum regular deposit cannot exceed the target amount
+        while True:
+            # Calculate the midpoint of the minimum and maximum regular deposit amounts
+            regular_deposit_amount = (min_regular_deposit + max_regular_deposit) / 2
+            # Calculate compound interest with the updated regular deposit amount
+            opening_amounts, interest_earneds, regular_deposits, closing_amounts = calculate_compound_interest_with_regular_deposits(
+                **regular_deposit_params, regular_deposit_amount=regular_deposit_amount)
+            # Check if the target amount is reached with the updated regular deposit amount
+            if is_target_amount_reached(closing_amounts, target_amount):
+                print("Target amount reached with regular deposit amount:", regular_deposit_amount)
+                break
+            else:
+                # Adjust the range for the regular deposit amount based on whether the closing amount is greater or less than the target amount
+                if closing_amounts[-1] < target_amount:
+                    # If closing amount is less than target amount, increase the minimum regular deposit amount
+                    min_regular_deposit = regular_deposit_amount
+                else:
+                    # If closing amount is greater than target amount, decrease the maximum regular deposit amount
+                    max_regular_deposit = regular_deposit_amount
