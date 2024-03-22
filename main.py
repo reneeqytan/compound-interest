@@ -183,3 +183,29 @@ elif compounding_period_unit == "day":
     time_unit_plural = "days"
 print(f"Time taken: {periods} {time_unit_plural}")
 
+# PART 3, comparing 2 ci accounts
+
+def input_ci_account_params(account_number):
+    print(f"Input parameters for Compound Interest Account {account_number}:")
+    principal = int(input("Enter the principal amount in $: "))
+    interest_rate_percentage = float(input("Enter the interest rate (enter 7% as 7): "))
+    time_unit = input("Enter the interest rate time unit (year, quarter, month, week, day): ")
+    compounding_period_unit = input(
+        "Enter the compounding period time unit (year, quarter, month, week, day, custom): ")
+    projection_time = int(input("Enter the projection time in years: "))
+
+    return {
+        "principal": principal,
+        "interest_rate_percentage": interest_rate_percentage,
+        "time_unit": time_unit,
+        "compounding_period_unit": compounding_period_unit,
+        "projection_time": projection_time
+    }
+
+# Prompt the user to input parameters for both Compound Interest Accounts
+ci_account1_params = input_ci_account_params(1)
+ci_account2_params = input_ci_account_params(2)
+
+print("\nCompound Interest Account 1 parameters:", ci_account1_params)
+print("Compound Interest Account 2 parameters:", ci_account2_params)
+
